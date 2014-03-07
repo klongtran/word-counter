@@ -69,7 +69,7 @@ public class DistinctiveWordFinder {
 	 */
 	private void findDistinctive() {
         // TODO: initialize to words in primary counter
-        String words[] = null;
+        String words[] = primaryCounts.getAllWords();
 
         // This array will be used to sort the word scores;
         WordScore scores[] = new WordScore[words.length];
@@ -79,8 +79,8 @@ public class DistinctiveWordFinder {
 
             // TODO: correctly get the primary and secondary counts from
             // the primaryCounts and secondaryCounts instance variables.
-            int primary = 0;
-            int secondary = 0;
+            int primary = primaryCounts.getCount(word);
+            int secondary = secondaryCounts.getCount(word);
 
             // Calculate the interestingness score and prepare it in the output queue
             double score = getDistinctiveScore(primary, secondary);
@@ -104,9 +104,7 @@ public class DistinctiveWordFinder {
      * @return
      */
     private double getDistinctiveScore(int primaryCount, int secondaryCount) {
-        // TODO: return something reasonable.
-        // A higher value means more "distinctive".
-        return 0.0;
+        return (primaryCount) / (secondaryCount + primaryCount + 1.0);
     }
 
 	/**
@@ -115,7 +113,7 @@ public class DistinctiveWordFinder {
 	 * @return An array containing the words.
 	 */
 	private String [] splitLine(String line) {
-		return line.split("[^a-zA-Z0-9']+");
+		return line.replaceAll("[^a-zA-Z0-9]+", " ").split(" +");
 	}
 	
 	public static void main(String args[]) throws IOException {
